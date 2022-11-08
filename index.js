@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-// const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 const app = express();
@@ -17,20 +16,35 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 
 
-// async function run(){
-//     try{
-//         const productCollection = client.db('emaJohn').collection('products')
+async function run(){
+    try{
+        const serviceCollection = client.db('electricalSolution').collection('services')
 
-//         app.get('/products', async(req, res) =>{
-//             const page = parseInt(req.query.page);
-//             const size = parseInt(req.query.size);
+        app.get('/', async (req, res) =>{
+            const query = {}
+            const cursor = serviceCollection.find(query);
+            const services = await cursor.limit(3).toArray();
+            res.send(services);
+        });
+
+        app.get('/services', async (req, res) =>{
+            const query = {}
+            const cursor = serviceCollection.find(query);
+            const services = await cursor.toArray();
+            res.send(services);
+        });
+
+
+        // app.get('/services', async(req, res) =>{
+            // const page = parseInt(req.query.page);
+            // const size = parseInt(req.query.size);
 //             console.log(page, size);
-//             const query = {}
-//             const cursor = productCollection.find(query);
-//             const products = await cursor.skip(page*size).limit(size).toArray();
+            // const query = {}
+            // const cursor = serviceCollection.find(query);
+            // const products = await cursor.skip(page*size).limit(size).toArray();
 //             const count = await productCollection.estimatedDocumentCount();
-//             res.send({count, products});
-//         });
+            // res.send({count, products});
+        // });
 
 //         app.post('/productsByIds', async(req, res) =>{
 //             const ids = req.body;
@@ -41,16 +55,16 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 //             res.send(products);
 //         })
 
-//     }
-//     finally{
+    }
+    finally{
 
-//     }
-// } 
-// run().catch(err => console.error(err));
+    }
+} 
+run().catch(err => console.error(err));
 
-app.get('/', (req, res) =>{
-    res.send('Electrical Solution server is running');
-})
+// app.get('/', (req, res) =>{
+//     res.send('Electrical Solution server is running');
+// })
 
 app.listen(port, () =>{
     console.log(`Electrical Solution running on: ${port}`)
