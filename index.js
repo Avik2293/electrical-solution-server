@@ -45,7 +45,11 @@ async function run() {
         });
 
         //Add Service
-        
+        app.post('/addservice', async (req, res) => {
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
+            res.send(result);
+        });
 
         //Reviews
         app.get('/myreviews', async (req, res) => {
