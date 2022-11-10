@@ -75,7 +75,11 @@ async function run() {
                 }
             }
 
-            const cursor = reviewCollection.find(query);
+            const options = {
+                sort: { date: -1 }
+            };
+
+            const cursor = reviewCollection.find(query, options);
             const serviceReviews = await cursor.toArray();
             res.send(serviceReviews);
         });
@@ -83,6 +87,7 @@ async function run() {
         //Create
         app.post('/reviews', async (req, res) => {
             const review = req.body;
+            review.date = new Date();
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         });
@@ -130,16 +135,6 @@ async function run() {
         //             const count = await productCollection.estimatedDocumentCount();
         // res.send({count, products});
         // });
-
-        //         app.post('/productsByIds', async(req, res) =>{
-        //             const ids = req.body;
-        //             const objectIds = ids.map(id => ObjectId(id))
-        //             const query = {_id: {$in: objectIds}};
-        //             const cursor = productCollection.find(query);
-        //             const products = await cursor.toArray();
-        //             res.send(products);
-        //         })
-
     }
     finally {
 
