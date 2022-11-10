@@ -24,7 +24,10 @@ async function run() {
 
         app.get('/', async (req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const options = {
+                sort: { date: -1 }
+            };
+            const cursor = serviceCollection.find(query, options);
             const services = await cursor.limit(3).toArray();
             res.send(services);
         });
@@ -47,6 +50,7 @@ async function run() {
         //Add Service
         app.post('/addservice', async (req, res) => {
             const service = req.body;
+            service.date = new Date();
             const result = await serviceCollection.insertOne(service);
             res.send(result);
         });
