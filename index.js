@@ -123,18 +123,6 @@ async function run() {
             const result = await reviewCollection.updateOne(query, updatedDoc, option);
             res.send(result);
         });
-
-
-        // app.get('/services', async(req, res) =>{
-        // const page = parseInt(req.query.page);
-        // const size = parseInt(req.query.size);
-        //             console.log(page, size);
-        // const query = {}
-        // const cursor = serviceCollection.find(query);
-        // const products = await cursor.skip(page*size).limit(size).toArray();
-        //             const count = await productCollection.estimatedDocumentCount();
-        // res.send({count, products});
-        // });
     }
     finally {
 
